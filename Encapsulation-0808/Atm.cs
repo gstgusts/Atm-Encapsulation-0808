@@ -13,14 +13,14 @@ namespace Encapsulation_0808
         public Atm(string address, int balance)
         {
             Address = address;
-            Balance = balance;  
+            _balance = balance;  
         }
 
-        private List<Account> _accounts { get; set; }
+        private List<Account> _accounts { get; set; } = new List<Account>();
 
         public string Address { get; private set; }
 
-        public int Balance { get; private set; }
+        private int _balance;
 
         public IEnumerable<Account> Accounts => _accounts;
 
@@ -68,5 +68,27 @@ namespace Encapsulation_0808
 
             _currentAccount = null;
         }
-    }
+
+        internal TakeOutMoneyResultEnum TakeOutMoney(int amount)
+        {
+            if (_currentAccount == null)
+            {
+                throw new ArgumentNullException("Not connected to account");
+            }
+
+            if(_balance < amount)
+            {
+                return TakeOutMoneyResultEnum.PleaseChooseDifferentAmount;
+            }
+
+            var result = _currentAccount.TakeOutMoney(amount);
+
+            if(result == TakeOutMoneyResultEnum.Success)
+            {
+                _balance -= amount;
+            }
+
+            return result;
+        }
+    }  
 }

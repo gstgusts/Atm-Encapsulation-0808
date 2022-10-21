@@ -28,5 +28,16 @@ namespace Encapsulation_0808
         public bool IsPinValid(int pin) { 
             return _pin == pin; 
         }
+
+        internal TakeOutMoneyResultEnum TakeOutMoney(int amount)
+        {
+            if(Balance < amount)
+            {
+                return TakeOutMoneyResultEnum.NotEnoughMoney;
+            }
+
+            Balance -= amount;
+            return TakeOutMoneyResultEnum.Success;
+        }
     }
 }
